@@ -4,38 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accès Protégé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #FAF3E0;
+            color: #5C5346;
             text-align: center;
-            padding: 50px;
+            padding: 20px;
+            margin: 0;
         }
-        .hidden {
-            display: none;
+
+        h2 {
+            color: #8B5E34;
         }
-        .visible {
-            display: block;
+
+        .container {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
         }
+
         input, textarea {
             margin: 10px 0;
             padding: 10px;
             width: 80%;
+            border: 1px solid #E0D4B4;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
         }
+
         button {
             padding: 10px 20px;
+            background-color: #8B5E34;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover {
+            background-color: #A47551;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        #post-output div {
+            background-color: #F0E5D2;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <div id="password-screen" class="visible">
+    <div id="password-screen" class="container visible">
         <h2>Veuillez entrer le mot de passe</h2>
         <input type="password" id="password-input" placeholder="Mot de passe">
         <button onclick="checkPassword()">Valider</button>
         <p id="error-msg" style="color:red;"></p>
     </div>
 
-    <div id="main-content" class="hidden">
+    <div id="main-content" class="container hidden">
         <h2>Bienvenue sur le site</h2>
         <form>
             <label for="text-input">Poster du texte :</label><br>
@@ -57,6 +98,7 @@
             if (password === "bi1les") {
                 document.getElementById("password-screen").classList.replace("visible", "hidden");
                 document.getElementById("main-content").classList.replace("hidden", "visible");
+                loadPosts(); // Charger les publications existantes
             } else {
                 errorMsg.textContent = "Mot de passe incorrect. Veuillez réessayer.";
             }
@@ -66,24 +108,54 @@
             const text = document.getElementById("text-input").value;
             const photoInput = document.getElementById("photo-input");
             const photoDescription = document.getElementById("photo-description").value;
-            const postOutput = document.getElementById("post-output");
 
-            let content = "<div style='border:1px solid #ccc; padding:10px; margin:10px 0;'>";
-            if (text) {
-                content += "<p><strong>Texte :</strong> " + text + "</p>";
-            }
+            let content = {
+                text: text,
+                photo: "",
+                description: photoDescription
+            };
+
             if (photoInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    content += "<p><strong>Photo :</strong><br><img src='" + e.target.result + "' alt='photo' style='max-width:100%;'><br>";
-                    content += "<em>Description :</em> " + photoDescription + "</p></div>";
-                    postOutput.innerHTML += content;
+                    content.photo = e.target.result;
+                    savePost(content);
+                    displayPost(content);
                 };
                 reader.readAsDataURL(photoInput.files[0]);
             } else {
-                content += "</div>";
-                postOutput.innerHTML += content;
+                savePost(content);
+                displayPost(content);
             }
+        }
+
+        function savePost(content) {
+            let posts = JSON.parse(localStorage.getItem("posts")) || [];
+            posts.push(content);
+            localStorage.setItem("posts", JSON.stringify(posts));
+        }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem("posts")) || [];
+            posts.forEach(post => {
+                displayPost(post);
+            });
+        }
+
+        function displayPost(content) {
+            const postOutput = document.getElementById("post-output");
+
+            let postHtml = "<div>";
+            if (content.text) {
+                postHtml += "<p><strong>Texte :</strong> " + content.text + "</p>";
+            }
+            if (content.photo) {
+                postHtml += "<p><strong>Photo :</strong><br><img src='" + content.photo + "' alt='photo' style='max-width:100%;'><br>";
+                postHtml += "<em>Description :</em> " + content.description + "</p>";
+            }
+            postHtml += "</div>";
+
+            postOutput.innerHTML += postHtml;
         }
     </script>
 </body>
