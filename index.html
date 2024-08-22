@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès Protégé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        input, textarea {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="password-screen" class="visible">
+        <h2>Veuillez entrer le mot de passe</h2>
+        <input type="password" id="password-input" placeholder="Mot de passe">
+        <button onclick="checkPassword()">Valider</button>
+        <p id="error-msg" style="color:red;"></p>
+    </div>
+
+    <div id="main-content" class="hidden">
+        <h2>Bienvenue sur le site</h2>
+        <form>
+            <label for="text-input">Poster du texte :</label><br>
+            <textarea id="text-input" rows="4" placeholder="Votre texte ici"></textarea><br>
+            <label for="photo-input">Télécharger une photo :</label><br>
+            <input type="file" id="photo-input" accept="image/*"><br>
+            <label for="photo-description">Ajouter une description :</label><br>
+            <textarea id="photo-description" rows="2" placeholder="Description de la photo"></textarea><br>
+            <button type="button" onclick="submitContent()">Publier</button>
+        </form>
+        <div id="post-output"></div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById("password-input").value;
+            const errorMsg = document.getElementById("error-msg");
+
+            if (password === "bi1les") {
+                document.getElementById("password-screen").classList.replace("visible", "hidden");
+                document.getElementById("main-content").classList.replace("hidden", "visible");
+            } else {
+                errorMsg.textContent = "Mot de passe incorrect. Veuillez réessayer.";
+            }
+        }
+
+        function submitContent() {
+            const text = document.getElementById("text-input").value;
+            const photoInput = document.getElementById("photo-input");
+            const photoDescription = document.getElementById("photo-description").value;
+            const postOutput = document.getElementById("post-output");
+
+            let content = "<div style='border:1px solid #ccc; padding:10px; margin:10px 0;'>";
+            if (text) {
+                content += "<p><strong>Texte :</strong> " + text + "</p>";
+            }
+            if (photoInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    content += "<p><strong>Photo :</strong><br><img src='" + e.target.result + "' alt='photo' style='max-width:100%;'><br>";
+                    content += "<em>Description :</em> " + photoDescription + "</p></div>";
+                    postOutput.innerHTML += content;
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                content += "</div>";
+                postOutput.innerHTML += content;
+            }
+        }
+    </script>
+</body>
+</html>
