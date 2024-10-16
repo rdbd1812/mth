@@ -58,6 +58,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
         .gallery img:hover, .videos video:hover {
             transform: scale(1.05);
@@ -72,20 +73,53 @@
             width: 100%;
             bottom: 0;
         }
-        /* Animations */
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            text-align: center;
+        }
+        .lightbox img {
+            width: 80%;
+            max-width: 700px;
+            margin: auto;
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        .lightbox .close, .lightbox .prev, .lightbox .next {
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 16px;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .lightbox .close {
+            top: 20px;
+            right: 35px;
+        }
+        .lightbox .prev {
+            left: 10px;
+        }
+        .lightbox .next {
+            right: 10px;
+        }
+        .lightbox .prev:hover, .lightbox .next:hover, .lightbox .close:hover {
+            color: #bbb;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
-        }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
     </style>
 </head>
@@ -105,12 +139,19 @@
     <!-- Section de la galerie d'images -->
     <section id="gallery" class="gallery">
         <h2>Galerie d'images</h2>
-        <img src="https://i.postimg.cc/rsxGcMhG/IMG-0911.png" alt="page de garde">
-        <img src="image2.jpg" alt="Oeuvre 2">
-        <img src="image3.jpg" alt="Oeuvre 3">
-        <img src="image4.jpg" alt="Oeuvre 4">
-        <!-- Ajoute plus d'images ici -->
+        <img src="https://i.postimg.cc/rsxGcMhG/IMG-0911.png" alt="page de garde" class="gallery-item">
+        <img src="image2.jpg" alt="Oeuvre 2" class="gallery-item">
+        <img src="image3.jpg" alt="Oeuvre 3" class="gallery-item">
+        <img src="image4.jpg" alt="Oeuvre 4" class="gallery-item">
     </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="close">&times;</span>
+        <img id="lightbox-img" src="">
+        <span class="prev">&#10094;</span>
+        <span class="next">&#10095;</span>
+    </div>
 
     <!-- Section des vidéos -->
     <section id="videos" class="videos">
@@ -123,7 +164,6 @@
             <source src="video2.mp4" type="video/mp4">
             Votre navigateur ne supporte pas la balise vidéo.
         </video>
-        <!-- Ajoute plus de vidéos ici -->
     </section>
 
     <!-- Section Contact -->
@@ -135,6 +175,48 @@
     <footer>
         <p>&copy; 2024 Art Book Elie Elbaz - Tous droits réservés.</p>
     </footer>
+
+    <!-- Script JS -->
+    <script>
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.querySelector('.close');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentImageIndex;
+
+        // Ouvrir la lightbox avec l'image cliquée
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                lightbox.style.display = 'block';
+                lightboxImg.src = item.src;
+                currentImageIndex = index;
+            });
+        });
+
+        // Fermer la lightbox
+        closeBtn.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        // Navigation entre les images (précédent/suivant)
+        prevBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : galleryItems.length - 1;
+            lightboxImg.src = galleryItems[currentImageIndex].src;
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex < galleryItems.length - 1) ? currentImageIndex + 1 : 0;
+            lightboxImg.src = galleryItems[currentImageIndex].src;
+        });
+
+        // Fermer la lightbox en cliquant à l'extérieur de l'image
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightboxImg) return;
+            lightbox.style.display = 'none';
+        });
+    </script>
 
 </body>
 </html>
