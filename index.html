@@ -3,160 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accès Protégé</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Mon Art Book Cosy</title>
+    <!-- Lien vers Google Fonts pour la police d'écriture -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #FAF3E0;
-            color: #5C5346;
+            background-color: #f6f0e7;
+            margin: 0;
+            padding: 0;
+            color: #4f4b47;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #ffe8d6;
+            color: #d05353;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 2em;
+            animation: fadeInDown 1s ease-out;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #d8c3a5;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #ffe8d6;
+        }
+        section {
+            padding: 50px;
+            animation: fadeIn 1s ease-in;
+        }
+        .gallery, .videos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+        .gallery img, .videos video {
+            width: 300px;
+            height: 200px;
+            margin: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gallery img:hover, .videos video:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        footer {
             text-align: center;
             padding: 20px;
-            margin: 0;
+            background-color: #d8c3a5;
+            color: #ffffff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
-
-        h2 {
-            color: #8B5E34;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        .container {
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        input, textarea {
-            margin: 10px 0;
-            padding: 10px;
-            width: 80%;
-            border: 1px solid #E0D4B4;
-            border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #8B5E34;
-            color: #FFFFFF;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        button:hover {
-            background-color: #A47551;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .visible {
-            display: block;
-        }
-
-        #post-output div {
-            background-color: #F0E5D2;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div id="password-screen" class="container visible">
-        <h2>Veuillez entrer le mot de passe</h2>
-        <input type="password" id="password-input" placeholder="Mot de passe">
-        <button onclick="checkPassword()">Valider</button>
-        <p id="error-msg" style="color:red;"></p>
-    </div>
 
-    <div id="main-content" class="container hidden">
-        <h2>Bienvenue sur le site</h2>
-        <form>
-            <label for="text-input">Poster du texte :</label><br>
-            <textarea id="text-input" rows="4" placeholder="Votre texte ici"></textarea><br>
-            <label for="photo-input">Télécharger une photo :</label><br>
-            <input type="file" id="photo-input" accept="image/*"><br>
-            <label for="photo-description">Ajouter une description :</label><br>
-            <textarea id="photo-description" rows="2" placeholder="Description de la photo"></textarea><br>
-            <button type="button" onclick="submitContent()">Publier</button>
-        </form>
-        <div id="post-output"></div>
-    </div>
+    <header>
+        <h1>Mon Art Book Cosy</h1>
+        <p>Découvrez mes œuvres visuelles et vidéos dans une atmosphère chaleureuse</p>
+    </header>
 
-    <script>
-        function checkPassword() {
-            const password = document.getElementById("password-input").value;
-            const errorMsg = document.getElementById("error-msg");
+    <nav>
+        <a href="#gallery">Galerie d'images</a>
+        <a href="#videos">Vidéos</a>
+        <a href="#contact">Contact</a>
+    </nav>
 
-            if (password === "bi1les") {
-                document.getElementById("password-screen").classList.replace("visible", "hidden");
-                document.getElementById("main-content").classList.replace("hidden", "visible");
-                loadPosts(); // Charger les publications existantes
-            } else {
-                errorMsg.textContent = "Mot de passe incorrect. Veuillez réessayer.";
-            }
-        }
+    <!-- Section de la galerie d'images -->
+    <section id="gallery" class="gallery">
+        <h2>Galerie d'images</h2>
+        <img src="image1.jpg" alt="Oeuvre 1">
+        <img src="image2.jpg" alt="Oeuvre 2">
+        <img src="image3.jpg" alt="Oeuvre 3">
+        <img src="image4.jpg" alt="Oeuvre 4">
+        <!-- Ajoute plus d'images ici -->
+    </section>
 
-        function submitContent() {
-            const text = document.getElementById("text-input").value;
-            const photoInput = document.getElementById("photo-input");
-            const photoDescription = document.getElementById("photo-description").value;
+    <!-- Section des vidéos -->
+    <section id="videos" class="videos">
+        <h2>Pièces vidéos</h2>
+        <video controls>
+            <source src="video1.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la balise vidéo.
+        </video>
+        <video controls>
+            <source src="video2.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la balise vidéo.
+        </video>
+        <!-- Ajoute plus de vidéos ici -->
+    </section>
 
-            let content = {
-                text: text,
-                photo: "",
-                description: photoDescription
-            };
+    <!-- Section Contact -->
+    <section id="contact" style="text-align: center; padding: 50px;">
+        <h2>Contactez-moi</h2>
+        <p>Vous pouvez me contacter à : <a href="mailto:monemail@example.com">monemail@example.com</a></p>
+    </section>
 
-            if (photoInput.files.length > 0) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    content.photo = e.target.result;
-                    savePost(content);
-                    displayPost(content);
-                };
-                reader.readAsDataURL(photoInput.files[0]);
-            } else {
-                savePost(content);
-                displayPost(content);
-            }
-        }
+    <footer>
+        <p>&copy; 2024 Mon Art Book Cosy - Tous droits réservés.</p>
+    </footer>
 
-        function savePost(content) {
-            let posts = JSON.parse(localStorage.getItem("posts")) || [];
-            posts.push(content);
-            localStorage.setItem("posts", JSON.stringify(posts));
-        }
-
-        function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem("posts")) || [];
-            posts.forEach(post => {
-                displayPost(post);
-            });
-        }
-
-        function displayPost(content) {
-            const postOutput = document.getElementById("post-output");
-
-            let postHtml = "<div>";
-            if (content.text) {
-                postHtml += "<p><strong>Texte :</strong> " + content.text + "</p>";
-            }
-            if (content.photo) {
-                postHtml += "<p><strong>Photo :</strong><br><img src='" + content.photo + "' alt='photo' style='max-width:100%;'><br>";
-                postHtml += "<em>Description :</em> " + content.description + "</p>";
-            }
-            postHtml += "</div>";
-
-            postOutput.innerHTML += postHtml;
-        }
-    </script>
 </body>
 </html>
