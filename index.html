@@ -144,7 +144,7 @@
         <img src="https://i.postimg.cc/W3rk0m3d/IMG-0952.png" alt="page de garde" class="gallery-item">
         <img src="https://i.postimg.cc/zB3dNc09/IMG-0953.png" alt="2" class="gallery-item">
         <img src="https://i.postimg.cc/VkK7rwrJ/IMG-0914.png" alt="2bis" class="gallery-item">
-        <img src="https://i.postimg.cc/7hR8zv0W/IMG-0915.png" alt="3" class="gallery-item">
+        <img src="https://i.postimg.cc/ncxvYWqp/IMG-0954.png" alt="3" class="gallery-item">
         <img src="https://i.postimg.cc/vHD6zdcR/IMG-0955.png" alt="4" class="gallery-item">
     </section>
 
@@ -233,25 +233,29 @@
             lightbox.style.display = 'none';
         });
 
-        // Navigation entre les images (précédent/suivant)
+        // Fonction pour afficher l'image correspondante
         function showImage(index) {
             lightboxImg.src = galleryItems[index].src;
         }
 
-        prevBtn.addEventListener('click', () => {
+        // Navigation entre les images (précédent/suivant)
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Empêche le clic de fermer la lightbox
             currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : galleryItems.length - 1;
             showImage(currentImageIndex);
         });
 
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Empêche le clic de fermer la lightbox
             currentImageIndex = (currentImageIndex < galleryItems.length - 1) ? currentImageIndex + 1 : 0;
             showImage(currentImageIndex);
         });
 
         // Fermer la lightbox en cliquant à l'extérieur de l'image
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightboxImg || e.target === lightbox) return;
-            lightbox.style.display = 'none';
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+            }
         });
     </script>
 
