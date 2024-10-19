@@ -225,7 +225,7 @@
             item.addEventListener('click', () => {
                 lightbox.style.display = 'block';
                 lightboxImg.src = item.src;
-                currentImageIndex = index;
+                currentImageIndex = index; // Définir l'index courant
             });
         });
 
@@ -251,7 +251,7 @@
 
         // Fermer la lightbox en cliquant à l'extérieur de l'image
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightboxImg) return;
+            if (e.target === lightboxImg || e.target === lightbox) return;
             lightbox.style.display = 'none';
         });
     </script>
