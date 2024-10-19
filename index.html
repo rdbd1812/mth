@@ -7,10 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <style>
 
+        .flower-container {
+            position: relative; /* Permet de positionner les fleurs par rapport à ce conteneur */
+            height: 100vh; /* S'assure que le conteneur a une hauteur */
+            overflow: hidden; /* Cache les fleurs qui dépassent */
+        }
+
+        .flower {
+            position: absolute;
+            opacity: 0.7; /* Peut ajuster l'opacité pour un effet subtil */
+            pointer-events: none; /* Ignore les événements de souris pour que les fleurs n'interfèrent pas avec d'autres éléments */
+            transition: transform 0.5s ease; /* Ajoute une transition pour une apparence plus douce */
+        }
+
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f6f0e7;
-            background-image: url('https://i.pinimg.com/736x/7f/52/47/7f5247bfe4d36a9c33eed56cfb11871d.jpg'); /* Remplace par l'URL de ton image de motif floral */
+            background-image: url('https://i.postimg.cc/J7b6M2z7/7f5247bfe4d36a9c33eed56cfb11871d.png'); /* Remplace par l'URL de ton image de motif floral */
             background-repeat: repeat; /* Répète l'image pour couvrir tout le fond */
             background-size: 150px; /* Ajuste la taille du motif selon tes besoins */
             margin: 0;
@@ -144,6 +158,7 @@
 <body>
 
     <header>
+        <div id="flowers" class="flower-container"></div>
         <h1>Bienvenue Dans Mon Art Book!</h1>
         <p>Découvrez mes œuvres visuelles et vidéos ! </p>
     </header>
@@ -315,6 +330,37 @@
             }
         });
     </script>
+
+    <script>
+        const flowerContainer = document.getElementById('flowers');
+
+    // Nombre de fleurs à générer
+        const numberOfFlowers = 30;
+
+        for (let i = 0; i < numberOfFlowers; i++) {
+            const flower = document.createElement('img');
+            flower.src = 'URL_DE_TON_IMAGE_FLORELE'; // Remplace par l'URL de ton image de fleur
+            flower.className = 'flower';
+        
+        // Taille aléatoire
+            const size = Math.random() * (100 - 50) + 50; // Taille entre 50px et 100px
+            flower.style.width = `${size}px`;
+            flower.style.height = `${size}px`;
+
+        // Position aléatoire
+            const x = Math.random() * window.innerWidth; // Position horizontale aléatoire
+            const y = Math.random() * window.innerHeight; // Position verticale aléatoire
+            flower.style.left = `${x}px`;
+            flower.style.top = `${y}px`;
+
+        // Rotation aléatoire
+            const rotation = Math.random() * 360; // Rotation entre 0 et 360 degrés
+            flower.style.transform = `rotate(${rotation}deg)`;
+
+            flowerContainer.appendChild(flower);
+        }
+</script>
+
 
 </body>
 </html>
