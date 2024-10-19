@@ -87,8 +87,8 @@
             text-align: center;
         }
         .lightbox img {
-            width: 80%;
-            max-width: 700px;
+            max-width: 90%;
+            max-height: 90%;
             margin: auto;
             display: block;
             animation: fadeIn 0.5s ease;
@@ -110,9 +110,11 @@
         }
         .lightbox .prev {
             left: 10px;
+            transform: translateY(-50%);
         }
         .lightbox .next {
             right: 10px;
+            transform: translateY(-50%);
         }
         .lightbox .prev:hover, .lightbox .next:hover, .lightbox .close:hover {
             color: #bbb;
@@ -233,14 +235,18 @@
         });
 
         // Navigation entre les images (précédent/suivant)
+        function showImage(index) {
+            lightboxImg.src = galleryItems[index].src;
+        }
+
         prevBtn.addEventListener('click', () => {
             currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : galleryItems.length - 1;
-            lightboxImg.src = galleryItems[currentImageIndex].src;
+            showImage(currentImageIndex);
         });
 
         nextBtn.addEventListener('click', () => {
             currentImageIndex = (currentImageIndex < galleryItems.length - 1) ? currentImageIndex + 1 : 0;
-            lightboxImg.src = galleryItems[currentImageIndex].src;
+            showImage(currentImageIndex);
         });
 
         // Fermer la lightbox en cliquant à l'extérieur de l'image
@@ -252,4 +258,3 @@
 
 </body>
 </html>
-
